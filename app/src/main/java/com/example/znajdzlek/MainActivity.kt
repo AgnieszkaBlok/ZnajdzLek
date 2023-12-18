@@ -26,6 +26,8 @@ import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
 import java.nio.charset.StandardCharsets
+import kotlin.concurrent.thread
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -40,6 +42,7 @@ class MainActivity : AppCompatActivity() {
     private val apiDataFetcher: APIDataFetcher = APIDataFetcher()
 
     private lateinit var descriptionView: TextView
+    @Volatile
     private lateinit var largestText: String
 
 
@@ -78,7 +81,10 @@ class MainActivity : AppCompatActivity() {
             }
 
             search.setOnClickListener {
-                handleResult(apiDataFetcher.getMedicationData(largestText))
+                thread {
+                    handleResult(apiDataFetcher.getMedicationData(largestText))
+                }
+
                 //PostRequestTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
             }
 
@@ -91,14 +97,21 @@ class MainActivity : AppCompatActivity() {
     private fun handleResult(result: Result<MedicationResponse>) {
         when (result) {
             is Result.Success -> {
-                val medicationData = result.data
+                val medicationData = result.data.result
                 // Update UI with medicationData
-                showToast("Success: $medicationData")
+                runOnUiThread {
+                    showToast(medicationData)
+                }
+
             }
+
             is Result.Error -> {
                 val exception = result.exception
+                runOnUiThread {
+                    showToast("Error: ${exception.message}")
+                }
                 // Handle error
-                showToast("Error: ${exception.message}")
+
             }
         }
     }
@@ -108,13 +121,12 @@ class MainActivity : AppCompatActivity() {
         // For example, when the user rotates the device.
         // Replace 'applicationContext' with 'this' if you want to tie the Toast to the activity.
         // 'LENGTH_SHORT' can be changed to 'LENGTH_LONG' if you want a longer duration.
-        //Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
+        Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
 
         println(">>>>Message: $message")
+
         descriptionView.text = message
     }
-
-
 
 
     private fun takeImage() {
@@ -122,15 +134,8 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 
         try {
-
             startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
-
-        } catch (e: Exception) {
-
-
-        }
-
-
+        } catch (_: Exception) {}
     }
 
 
@@ -160,22 +165,22 @@ class MainActivity : AppCompatActivity() {
 
             image?.let {
                 recognizer.process(it).addOnSuccessListener { visionText ->
-                        largestText = findLargestLetters(visionText)
-                        if (largestText.isNotEmpty()) {
+                    largestText = findLargestLetters(visionText)
+                    if (largestText.isNotEmpty()) {
 //                            saveTextToJsonFile(largestText)
-                            binding.textView.text = largestText
+                        binding.textView.text = largestText
 //                            val description = fetchDescriptionForMedication(largestText)
 //                            binding.descriptionView.text = description
-                        } else {
-                            Toast.makeText(this, "Nie znaleziono tekstu", Toast.LENGTH_SHORT).show()
-                        }
-                    }.addOnFailureListener { e ->
-                        Toast.makeText(
-                            this,
-                            "Rozpoznawanie tekstu nie powiodło się: ${e.message}",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                    } else {
+                        Toast.makeText(this, "Nie znaleziono tekstu", Toast.LENGTH_SHORT).show()
                     }
+                }.addOnFailureListener { e ->
+                    Toast.makeText(
+                        this,
+                        "Rozpoznawanie tekstu nie powiodło się: ${e.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         } else {
             Toast.makeText(this, "Proszę wybrać zdjęcie", Toast.LENGTH_SHORT).show()

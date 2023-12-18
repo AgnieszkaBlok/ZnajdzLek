@@ -39,7 +39,6 @@
             android:layout_width="match_parent"
             app:layout_constraintTop_toBottomOf="@+id/text_view"
             android:layout_height="wrap_content"
-            android:text="lorem ipsum"
             android:layout_marginTop="40dp">
         </TextView>
 
