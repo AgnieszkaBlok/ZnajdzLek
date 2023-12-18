@@ -125,7 +125,7 @@ class MainActivity : AppCompatActivity() {
 
         println(">>>>Message: $message")
 
-        descriptionView.text = message
+        binding.descriptionView.text = message
     }
 
 
@@ -135,7 +135,9 @@ class MainActivity : AppCompatActivity() {
 
         try {
             startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
-        } catch (_: Exception) {}
+        } catch (_: Exception) {
+            Toast.makeText(this, "Wystąpił problem przy robieniu zdjęcia", Toast.LENGTH_SHORT).show()
+        }
     }
 
 
