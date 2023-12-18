@@ -1,8 +1,5 @@
 package com.example.znajdzlek
-import android.accounts.NetworkErrorException
 import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
@@ -47,16 +44,12 @@ class APIDataFetcher {
         return try {
             val response = call.execute()
             if (response.isSuccessful) {
-                println(">>>successful response")
                 val medicationData = response.body()
                 Result.Success(medicationData!!)
             } else {
-                println(">>>Unusccessful response ${response.code()}")
                 Result.Error(Exception("Unsuccessful response: ${response.code()}"))
             }
         } catch (e: Exception) {
-            e.printStackTrace()
-            println(">>>ERROR occured ${e.message}")
             Result.Error(e)
         }
     }
