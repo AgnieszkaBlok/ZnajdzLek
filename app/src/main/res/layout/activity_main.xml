@@ -22,23 +22,37 @@
         </ImageView>
 
 
-
-        <ScrollView
+        <TextView
+            android:id="@+id/text_view"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/image_view"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/btn_layout">
-
-            <TextView
-                android:id="@+id/text_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp">
+            android:layout_marginTop="20dp">
 
 
-            </TextView>
+        </TextView>
+
+        <TextView
+            android:id="@+id/description_view"
+            android:layout_width="match_parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view"
+            android:layout_height="wrap_content"
+            android:text="lorem ipsum"
+            android:layout_marginTop="40dp">
+        </TextView>
+
+        <ScrollView
+            android:layout_width="298dp"
+            android:layout_height="283dp"
+            app:layout_constraintBottom_toTopOf="@+id/btn_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.495"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/image_view"
+            app:layout_constraintVertical_bias="0.613">
+
 
         </ScrollView>
 
