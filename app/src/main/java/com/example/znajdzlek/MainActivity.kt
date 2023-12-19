@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
     @Volatile
     private var largestText: String = ""
 
-//    val url = "https://rejestry.ezdrowie.gov.pl/rpl/search/public"
+//
       private lateinit var url : String
       private fun sendToast(message: String){
           Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
@@ -54,14 +54,18 @@ class MainActivity : AppCompatActivity() {
 
             captureImage.setOnClickListener {
                 takeImage()
-                textView.text = ""
+                descriptionView.text = "To check information about your medicine \n 1. Click CAPTURE button to take a photo. \n 2. After uploading the photo, click the DETECT button to read the name of your medication from the photo.\n 3. If the name is correct, click the SEARCH button to access medication information. If not, take another photo.\n 4.For more detailed information about the medicine or if you can't find yours, you can click on the laptop search button. \n"
+                textView.text = "Your medication"
             }
 
             detectTextImageBtn.setOnClickListener {
+
                 lifecycleScope.launch {
+
                     try {
                         val result = apiDataFetcher.getMedicationData(largestText)
                         handleResult(result)
+
                     } catch (e: Exception) {
                         println(">>>>Execution exception")
                     }
@@ -104,7 +108,7 @@ class MainActivity : AppCompatActivity() {
             is Result.Error -> {
                 val exception = result.exception
                 runOnUiThread {
-                    sendToast("Please perform detection first")
+                    println("Please perform detection first")
                 }
                 // Handle error
 
@@ -126,7 +130,7 @@ class MainActivity : AppCompatActivity() {
         try {
             startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
         } catch (_: Exception) {
-            Toast.makeText(this, "Wystąpił problem przy robieniu zdjęcia", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "The problem occurred while taking a photo.", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -161,12 +165,12 @@ class MainActivity : AppCompatActivity() {
                     if (largestText.isNotEmpty()) {
                         binding.textView.text = largestText
                     } else {
-                        Toast.makeText(this, "Nie znaleziono tekstu", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Text not found", Toast.LENGTH_SHORT).show()
                     }
                 }.addOnFailureListener { e ->
                     Toast.makeText(
                         this,
-                        "Rozpoznawanie tekstu nie powiodło się: ${e.message}",
+                        "Text recognition failed. ${e.message}",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
