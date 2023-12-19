@@ -2,6 +2,7 @@ package com.example.znajdzlek
 
 import android.content.Intent
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.TextView
@@ -32,7 +33,13 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var descriptionView: TextView
     @Volatile
-    private lateinit var largestText: String
+    private var largestText: String = ""
+
+//    val url = "https://rejestry.ezdrowie.gov.pl/rpl/search/public"
+      private lateinit var url : String
+      private fun sendToast(message: String){
+          Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+      }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,11 +68,24 @@ class MainActivity : AppCompatActivity() {
                 }
                 processImage()
             }
-
             search.setOnClickListener {
-                thread {
-                    handleResult(apiDataFetcher.getMedicationData(largestText))
+                if(largestText == ""){
+                    sendToast("Please perform detection first")
                 }
+                else{
+                    thread {
+                        handleResult(apiDataFetcher.getMedicationData(largestText))
+                    }
+                }
+            }
+            findMore.setOnClickListener{
+                if(largestText == "") {
+                    sendToast("Please perform detection first")
+                }else{
+                    url = "https://ktomalek.pl/l/lek/szukaj?searchInput=$largestText"
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                    startActivity(intent)
+                    }
             }
         }
     }
@@ -84,7 +104,7 @@ class MainActivity : AppCompatActivity() {
             is Result.Error -> {
                 val exception = result.exception
                 runOnUiThread {
-                    showDescriptionOnUI("Error: ${exception.message}")
+                    sendToast("Please perform detection first")
                 }
                 // Handle error
 
@@ -92,8 +112,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
     private fun showDescriptionOnUI(message: String) {
         binding.descriptionView.text = message
+
     }
 
 
@@ -149,8 +171,6 @@ class MainActivity : AppCompatActivity() {
                     ).show()
                 }
             }
-        } else {
-            Toast.makeText(this, "Proszę wybrać zdjęcie", Toast.LENGTH_SHORT).show()
         }
     }
 

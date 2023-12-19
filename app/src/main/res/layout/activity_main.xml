@@ -6,54 +6,89 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity">
+        tools:context=".MainActivity"
+        android:background="@color/baige">
 
 
         <ImageView
             android:id="@+id/image_view"
             android:layout_width="match_parent"
             android:layout_height="250dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="75dp"
             android:src="@drawable/place_holder"
-            android:layout_marginTop="20dp">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
         </ImageView>
 
-
         <TextView
             android:id="@+id/text_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/image_view"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="20dp">
-
-
-        </TextView>
-
-        <TextView
-            android:id="@+id/description_view"
-            android:layout_width="match_parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_view"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp">
-        </TextView>
-
-        <ScrollView
-            android:layout_width="298dp"
-            android:layout_height="283dp"
+            android:layout_width="200dp"
+            android:layout_height="44dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/yellow"
+            android:textSize="25dp"
+            android:text="Your medication"
+            android:textStyle="bold"
+            android:textAlignment="center"
             app:layout_constraintBottom_toTopOf="@+id/btn_layout"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.495"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/image_view"
-            app:layout_constraintVertical_bias="0.613">
+            app:layout_constraintTop_toTopOf="parent">
 
+
+        </TextView>
+
+
+        <ScrollView
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            app:layout_constraintBottom_toTopOf="@+id/btn_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/image_view"
+            app:layout_constraintVertical_bias="0.608">
+
+            <TextView
+                android:id="@+id/description_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:lineSpacingExtra="3sp"
+                android:text="To check information about your medicine \n 1. Click CAPTURE button to take a photo. \n 2. After uploading the photo, click the DETECT button to read the name of your medication from the photo.\n 3. If the name is correct, click the SEARCH button to access medication information. If not, take another photo.\n 4.For more detailed information about the medicine or if you can't find yours, you can click on the laptop search button. \n"
+                android:textAlignment="center"
+                android:textColor="@color/blue"
+                android:textStyle="bold"
+
+                >
+
+
+            </TextView>
 
         </ScrollView>
+
+        <ImageButton
+            android:id="@+id/findMore"
+            android:layout_width="410dp"
+            android:layout_height="50dp"
+            android:layout_margin="15dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:backgroundTint="@color/blue"
+            android:contentDescription="@string/szukaj"
+            android:elevation="4dp"
+            android:src="@drawable/serch"
+            app:layout_constraintBottom_toTopOf="@+id/btn_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent">
+
+        </ImageButton>
 
         <LinearLayout
             android:id="@+id/btn_layout"
@@ -68,8 +103,9 @@
                 android:id="@+id/capture_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:text="CAPTURE">
+                android:layout_margin="9dp"
+                android:text="CAPTURE"
+                android:backgroundTint="@color/blue">
 
             </Button>
 
@@ -77,8 +113,9 @@
                 android:id="@+id/detect_text_image_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:text="DETECT">
+                android:layout_margin="10dp"
+                android:text="DETECT"
+                android:backgroundTint="@color/blue">
 
             </Button>
 
@@ -86,8 +123,9 @@
                 android:id="@+id/search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:text="SEARCH">
+                android:layout_margin="10dp"
+                android:text="SEARCH"
+                android:backgroundTint="@color/blue">
 
             </Button>
 
